@@ -1,9 +1,16 @@
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { ChangeEvent, useState } from "react";
 
 type Props = {};
 
 const Header = (props: Props) => {
+  const [searchkey, setSearchKey] = useState<string>()
+  const router = useRouter()
+  const navigateToSearchPage = () => {
+    router.push(`/search?q=${searchkey}`)
+  }
+
   return (
     <section className="max-w-[1274px] mx-auto flex justify-between pt-6">
       <div className="flex items-center gap-[90px]">
@@ -35,9 +42,12 @@ const Header = (props: Props) => {
       </div>
       <input
         placeholder="Search movie or tv series"
+        value={searchkey}
         className="w-[374px] rounded-[37px] bg-[#374151] placeholder:text-[#868686] 
         placeholder:text-base font-normal focus:outline-none focus:text-white py-2 pl-[18px]"
+        onChange={({ target }: ChangeEvent<HTMLInputElement>) => setSearchKey(target.value)}
       />
+      <button onClick={navigateToSearchPage}>Tìm kiếm</button>
     </section>
   );
 };

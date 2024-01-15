@@ -1,8 +1,8 @@
 import React from "react";
-import {Movie} from "@/interfaces/movie";
+import { Movie } from "@/interfaces/movie";
 import Image from "next/image";
-import {Swiper, SwiperSlide} from "swiper/react";
-import {Autoplay, Pagination, Navigation} from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -12,7 +12,7 @@ type SliderProps = {
   movies: Movie[];
 };
 
-const Slider: React.FC<SliderProps> = ({movies}) => {
+const Slider: React.FC<SliderProps> = ({ movies }) => {
   return (
     <section className="max-w-[1170px] mx-auto py-[40px]">
       <h3 className="text-white text-[32px] font-semibold">Explore</h3>
@@ -30,12 +30,12 @@ const Slider: React.FC<SliderProps> = ({movies}) => {
         navigation={true}
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper">
-        {movies.map((movie: Movie) => {
+        {movies?.map((movie: Movie) => {
           return (
             <SwiperSlide key={movie.id}>
               <Image
                 alt={movie.original_title}
-                src={`${process.env.IMAGE_URL}${movie.poster_path}`}
+                src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${movie.poster_path}`}
                 className="w-full rounded-xl max-h-[400px] px-2 md:px-0 object-contail"
                 width={500}
                 height={400}

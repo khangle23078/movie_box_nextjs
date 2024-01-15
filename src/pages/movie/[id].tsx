@@ -8,6 +8,11 @@ import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import ReactPlayer from "react-player";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 interface MovieDetailProps {
   movie: MovieDetail;
@@ -20,12 +25,13 @@ const MovieDetail: NextPage<MovieDetailProps> = ({ movie, movies, videos }) => {
     <div className="max-w-[1170px] mx-auto py-[40px] min-h-screen">
       <Head>
         <title>{movie.title}</title>
+        <meta name="description" content={movie.overview} />
       </Head>
       <main>
         <h3 className="text-white text-2xl font-semiBold pb-4 text-center md:text-left">Movie detail</h3>
         <div className="flex items-center gap-[50px] flex-col md:flex-row">
           <Image
-            src={`${process.env.IMAGE_URL}${movie.poster_path}`}
+            src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${movie.poster_path}`}
             alt={movie.title}
             width={300}
             height={300}
@@ -48,7 +54,7 @@ const MovieDetail: NextPage<MovieDetailProps> = ({ movie, movies, videos }) => {
             <div className="flex gap-3 justify-center md:justify-normal">
               {movie.production_companies.map((production: ProductionCompany) => {
                 return <Image
-                  src={`https://image.tmdb.org/t/p/w500/${production.logo_path}`}
+                  src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${production.logo_path}`}
                   alt={production.name}
                   width={40}
                   height={40}
@@ -65,7 +71,7 @@ const MovieDetail: NextPage<MovieDetailProps> = ({ movie, movies, videos }) => {
               <h4 className="text-white text-2xl font-semiBold">Collections</h4>
               <p className="text-[#868686] text-lg py-3">{movie.belongs_to_collection?.name}</p>
               <Image
-                src={`https://image.tmdb.org/t/p/w500/${movie.belongs_to_collection.poster_path}`}
+                src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${movie.belongs_to_collection?.poster_path}`}
                 alt={movie.belongs_to_collection.name}
                 width={200}
                 height={200}
@@ -77,16 +83,32 @@ const MovieDetail: NextPage<MovieDetailProps> = ({ movie, movies, videos }) => {
       </main>
       <section className="px-2 md:mx-0">
         <h4 className="text-white text-2xl font-semiBold py-5">Videos</h4>
-        {videos.length > 0 ? videos.slice(0, 3).map((video: Video) => {
-          return (
-            <div key={video.id} className="py-2">
-              <p className="text-[#868686] text-lg py-2">{video.type}</p>
-              <ReactPlayer
-                url={`https://www.youtube.com/watch?v=${video.key}`}
-              />
-            </div>
-          )
-        }) : null}
+        <Swiper
+          spaceBetween={150}
+          slidesPerView={2}
+          modules={[Autoplay]}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+        >
+          <div className="flex gap-[30px]">
+            {videos.length > 0 ? videos.slice(0, 3).map((video: Video) => {
+              return (
+                <SwiperSlide key={video.id}>
+                  <div key={video.id} className="py-2">
+                    <p className="text-[#868686] text-lg py-2">{video.type}</p>
+                    <ReactPlayer
+                      url={`https://www.youtube.com/watch?v=${video.key}`}
+                    />
+                  </div>
+                </SwiperSlide>
+              )
+            }) : null}
+          </div>
+
+        </Swiper>
+
       </section >
       {movies.length > 0 ?
         <section>
