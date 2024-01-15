@@ -30,7 +30,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ data, type }) => {
       <div className="flex items-center justify-between text-white">
         <div className="flex items-center gap-1">
           <StarIcon className="text-yellow-300 w-4 h-4" />
-          <p>{data.vote_average.toFixed(1)}</p>
+          <p>{data?.vote_average.toFixed(1)}</p>
         </div>
         <p className="pr-2">{dayjs(data.release_date).format("YYYY")}</p>
       </div>
